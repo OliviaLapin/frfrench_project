@@ -12,24 +12,100 @@
 <div class="container-sm px-5 py-5">
     <form method="post" action="/send-card/">
         {% csrf_token %}
-        {% for field in form %}
+        
         <div class="row mb-3">
             <div class="col-md-3">
-                <label class="form-label fw-bold">{{ field.label }}:</label>
+                <label class="form-label fw-bold">Категория:</label>
             </div>
             <div class="col-md-9">
-                <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}">
-                {% if field.errors %}
-                <div class="text-danger small">{{ field.errors }}</div>
-                {% endif %}
+                <select name="topic" class="form-select" id="id_topic">
+                    <option value="Еда">Еда</option>
+                    <option value="Животные">Животные</option>
+                    <option value="Семья">Семья</option>
+                    <option value="Путешествия">Путешествия</option>
+                    <option value="Другое">➕ Создать новую категорию</option>
+                </select>
+                <div class="form-text">Выберите категорию для слова</div>
             </div>
         </div>
-        {% endfor %}
+        
+
+        <div class="row mb-3" id="new_topic_row" style="display: none;">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Название новой категории:</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="new_topic" class="form-control" id="id_new_topic" placeholder="Например: Профессии">
+                <div class="form-text">Заполните, если выбрали "Создать новую категорию"</div>
+            </div>
+        </div>
+        
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Слово на русском:</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="question" class="form-control" id="id_question">
+            </div>
+        </div>
+        
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Перевод на французский:</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="correct_answer" class="form-control" id="id_correct_answer">
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Вариант ответа 2 (неправильный):</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="option_2" class="form-control" id="id_option_2">
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Вариант ответа 3 (неправильный):</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="option_3" class="form-control" id="id_option_3">
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Вариант ответа 4 (неправильный):</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" name="option_4" class="form-control" id="id_option_4">
+            </div>
+        </div>
+        
         <div class="row">
             <div class="col-md-9 offset-md-3">
-                <button type="submit" class="btn btn-primary">Добавить карточку</button>
+                <button type="submit" class="btn btn-primary" style="background-color: #C44117; border-color: #A33510;">Добавить карточку</button>
             </div>
         </div>
     </form>
 </div>
+
+<script>
+    // Показывать/скрывать поле для новой категории
+    const topicSelect = document.getElementById('id_topic');
+    const newTopicRow = document.getElementById('new_topic_row');
+    
+    topicSelect.addEventListener('change', function() {
+        if (this.value === 'Другое') {
+            newTopicRow.style.display = 'flex';
+        } else {
+            newTopicRow.style.display = 'none';
+        }
+    });
+</script>
 {% endblock %}

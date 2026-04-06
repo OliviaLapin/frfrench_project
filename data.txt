@@ -1,0 +1,8 @@
+Еда;пирожное;gateau;gâteau;tarte;biscuit
+Еда;яблоко;pomme;poire;orange;banane
+Животные;кот;chat;chien;souris;oiseau
+Животные;собака;chien;chat;lapin;cheval
+Семья;мама;mère;père;frère;sœur
+Семья;папа;père;mère;frère;bébé
+Путешествия;аэропорт;aéroport;gare;hôtel;train
+Путешествия;отель;hôtel;aéroport;restaurant;plage

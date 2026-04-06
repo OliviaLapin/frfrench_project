@@ -5,8 +5,8 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-def read_cards():
-    """Читает карточки из файла data.txt"""
+def read_cards(category_filter=None):
+    """Читает карточки из истории ваших сохранений"""
     cards = []
     file_path = os.path.join(BASE_DIR, 'data.txt')
     try:
@@ -14,20 +14,34 @@ def read_cards():
             for line in f:
                 line = line.strip()
                 if line and ';' in line:
-                    russian, french = line.split(';', 1)
-                    cards.append({
-                        'russian': russian,
-                        'french': french,
-                    })
+                    parts = line.split(';')
+                    if len(parts) >= 3:
+                        category = parts[0]
+                        russian = parts[1]
+                        french = parts[2]
+                        option_2 = parts[3] if len(parts) > 3 else "Неправильный вариант"
+                        option_3 = parts[4] if len(parts) > 4 else "Другой вариант"
+                        option_4 = parts[5] if len(parts) > 5 else "Ещё вариант"
+                        
+                        card = {
+                            'category': category,
+                            'russian': russian,
+                            'french': french,
+                            'option_2': option_2,
+                            'option_3': option_3,
+                            'option_4': option_4,
+                        }
+                        if category_filter is None or category == category_filter:
+                            cards.append(card)
     except FileNotFoundError:
         pass
     return cards
 
-def save_card(russian_word, french_word):
+def save_card(category, russian_word, french_word, option_2, option_3, option_4):
     """Добавляет новую карточку в файл"""
     file_path = os.path.join(BASE_DIR, 'data.txt')
     with open(file_path, 'a', encoding='utf-8') as f:
-        f.write(f"\n{russian_word};{french_word}")
+        f.write(f"\n{category};{russian_word};{french_word};{option_2};{option_3};{option_4}")
     return True
 
 def home(request):
@@ -95,19 +109,25 @@ def send_card(request):
     if request.method == 'POST':
         form = CardForm(request.POST)
         if form.is_valid():
+            category = form.cleaned_data['topic']
             russian_word = form.cleaned_data['question']
             french_word = form.cleaned_data['correct_answer']
-            save_card(russian_word, french_word)
+            option_2 = form.cleaned_data['option_2']
+            option_3 = form.cleaned_data['option_3']
+            option_4 = form.cleaned_data['option_4']
+            
+            save_card(category, russian_word, french_word, option_2, option_3, option_4)
+            
             return render(request, 'french/card_result.html', {
                 'success': True,
                 'user': request.user.username,
-                'comment': f'Карточка "{russian_word}" → "{french_word}" успешно добавлена!'
+                'comment': f'Карточка "{russian_word}" → "{french_word}" добавлена в категорию "{category}"!'
             })
         else:
             return render(request, 'french/card_result.html', {
                 'success': False,
                 'user': request.user.username,
-                'comment': f'Ошибка валидации. Проверьте правильность заполнения полей.'
+                'comment': f'Ошибка валидации. Проверьте правильность заполнения полей: {form.errors}'
             })
     return redirect('french:card_add')
 
