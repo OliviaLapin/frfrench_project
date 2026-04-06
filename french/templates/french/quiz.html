@@ -18,7 +18,7 @@
                 <strong>Вопрос {{ forloop.counter }}:</strong> {{ card.russian }}
             </div>
             <div class="card-body">
-                <!-- Правильный ответ -->
+
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="radio" name="q_{{ forloop.counter0 }}" value="{{ card.french }}" id="q{{ forloop.counter0 }}_correct">
                     <label class="form-check-label" for="q{{ forloop.counter0 }}_correct">
@@ -26,8 +26,7 @@
                     </label>
                 </div>
                 
-                <!-- Неправильные варианты (если они есть в данных) -->
-                {% if card.option_2 %}
+                
                 <div class="form-check mb-2">
                     <input class="form-check-input" type="radio" name="q_{{ forloop.counter0 }}" value="{{ card.option_2 }}" id="q{{ forloop.counter0 }}_2">
                     <label class="form-check-label" for="q{{ forloop.counter0 }}_2">

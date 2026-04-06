@@ -58,40 +58,19 @@ def topics_list(request):
 
 @login_required
 def quiz(request, topic_id):
-    cards = read_cards()
     topics = {
-        1: 'Еда', 2: 'Животные', 3: 'Семья', 4: 'Путешествия'
+        1: 'Еда', 
+        2: 'Животные', 
+        3: 'Семья', 
+        4: 'Путешествия',
+        5: 'Все категории'
     }
     topic_name = topics.get(topic_id, 'Французский')
-    
-    if request.method == 'POST':
-        score = 0
-        total = len(cards)
-        unanswered = 0
-        
-        for i, card in enumerate(cards):
-            user_answer = request.POST.get(f'q_{i}')
-            if not user_answer:
-                unanswered += 1
-            elif user_answer.strip().lower() == card['french'].lower():
-                score += 1
-        
-        percent = int(score / total * 100) if total > 0 else 0
-        
-        return render(request, 'french/result.html', {
-            'score': score,
-            'total': total,
-            'percent': percent,
-            'topic_name': topic_name,
-            'topic_id': topic_id,
-            'unanswered': unanswered,
-        })
-    
-    return render(request, 'french/quiz.html', {
-        'cards': cards,
-        'topic_name': topic_name,
-        'topic_id': topic_id
-    })
+
+    if topic_id == 5:
+        cards = read_cards(category_filter=None)  
+    else:
+        cards = read_cards(category_filter=topic_name)  
 
 @login_required
 def card_add(request):
