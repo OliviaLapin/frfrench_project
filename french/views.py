@@ -53,17 +53,30 @@ def quiz(request, topic_id):
     if request.method == 'POST':
         score = 0
         total = len(cards)
+        unanswered = 0
+        
         for i, card in enumerate(cards):
             user_answer = request.POST.get(f'q_{i}')
-            if user_answer and user_answer.strip().lower() == card['french'].lower():
+            if not user_answer:  # Если пользователь не выбрал ответ
+                unanswered += 1
+            elif user_answer.strip().lower() == card['french'].lower():
                 score += 1
+        
         percent = int(score / total * 100) if total > 0 else 0
+        
+        # Добавляем сообщение о пропущенных вопросах
+        message = None
+        if unanswered > 0:
+            message = f'Вы не ответили на {unanswered} вопрос(ов). Засчитаны только отвеченные.'
+        
         return render(request, 'french/result.html', {
             'score': score,
             'total': total,
             'percent': percent,
             'topic_name': topic_name,
-            'topic_id': topic_id
+            'topic_id': topic_id,
+            'unanswered': unanswered,
+            'message': message
         })
     
     return render(request, 'french/quiz.html', {
@@ -71,35 +84,6 @@ def quiz(request, topic_id):
         'topic_name': topic_name,
         'topic_id': topic_id
     })
-
-@login_required
-def add_card(request):
-    return render(request, 'french/card_add.html', {'form': CardForm()})
-
-@login_required
-def edit_card(request, card_id):
-    return render(request, 'french/card_add.html', {'form': CardForm(), 'edit_mode': True})
-
-@login_required
-def send_card(request):
-    if request.method == 'POST':
-        form = CardForm(request.POST)
-        if form.is_valid():
-            russian_word = form.cleaned_data['question']
-            french_word = form.cleaned_data['correct_answer']
-            save_card(russian_word, french_word)
-            return render(request, 'french/card_result.html', {
-                'success': True,
-                'user': request.user.username,
-                'comment': f'Карточка "{russian_word}" → "{french_word}" успешно добавлена!'
-            })
-        else:
-            return render(request, 'french/card_result.html', {
-                'success': False,
-                'user': request.user.username,
-                'comment': f'Ошибка валидации: {form.errors}'
-            })
-    return redirect('french:add_card')
 
 @login_required
 def stats(request):

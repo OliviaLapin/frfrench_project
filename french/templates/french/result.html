@@ -14,6 +14,19 @@
         {{ percent }}%
     </div>
     <p class="lead">Правильно: {{ score }} из {{ total }}</p>
+    
+    {% if unanswered %}
+    <div class="alert alert-warning mt-3">
+        ⚠️ {{ message }}
+    </div>
+    {% endif %}
+    
+    {% if percent < 70 %}
+    <div class="alert alert-info mt-3">
+        💡 Совет: повторите слова и попробуйте ещё раз!
+    </div>
+    {% endif %}
+    
     <div class="mt-4">
         <a href="/topics/" class="btn btn-primary">К темам</a>
         <a href="/quiz/{{ topic_id }}/" class="btn btn-secondary">Пройти ещё раз</a>
