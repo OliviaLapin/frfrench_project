@@ -1,0 +1,35 @@
+{% extends "french/base_page.html" %}
+
+{% block page-title %}
+Добавить карточку
+{% endblock %}
+
+{% block page-lead %}
+Заполните форму, чтобы добавить новую пару слов (русский → французский).
+{% endblock %}
+
+{% block content %}
+<div class="container-sm px-5 py-5">
+    <form method="post" action="/send-card/">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">{{ field.label }}:</label>
+            </div>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}">
+                {% if field.errors %}
+                <div class="text-danger small">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-9 offset-md-3">
+                <button type="submit" class="btn btn-primary">Добавить карточку</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

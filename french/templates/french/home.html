@@ -1,0 +1,39 @@
+{% extends "french/base_page.html" %}
+
+{% block page-title %}
+Fr-Fr-French
+{% endblock %}
+
+{% block page-lead %}
+Учите французский язык с помощью интерактивных квизов.<br/>
+Этот проект поможет вам запомнить французские слова быстро и эффективно.
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5" id="project-contents">
+    <h2 class="pb-2 border-bottom">Что есть в этом проекте</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="col d-flex">
+            <div>
+                <h3 class="fs-2">Список тем</h3>
+                <p>Выберите тему для изучения.</p>
+                <a href="/topics/" class="btn btn-primary">Выбрать тему</a>
+            </div>
+        </div>
+        <div class="col d-flex">
+            <div>
+                <h3 class="fs-2">Добавить карточку</h3>
+                <p>Пополните базу слов своими карточками через форму.</p>
+                <a href="/card/add/" class="btn btn-primary">Добавить слово</a>
+            </div>
+        </div>
+        <div class="col d-flex">
+            <div>
+                <h3 class="fs-2">Статистика</h3>
+                <p>Сколько слов выучили? Какая средняя длина слов?</p>
+                <a href="/stats/" class="btn btn-primary">Посмотреть статистику</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

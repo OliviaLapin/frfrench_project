@@ -1,0 +1,33 @@
+{% extends "french/base_page.html" %}
+
+{% block page-title %}
+Темы для изучения
+{% endblock %}
+
+{% block page-lead %}
+Выберите тему и начните квиз. Каждый квиз содержит случайные слова из нашей базы.
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5">
+    <div class="row g-4">
+        {% for topic in topics %}
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ topic.name }}</h5>
+                    <p class="card-text">{{ topic.description }}</p>
+                    <a href="/quiz/{{ topic.id }}/" class="btn btn-success">Начать квиз →</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mt-5">
+        <div class="alert alert-info">
+            <strong>Совет:</strong> Сначала добавьте свои карточки через <a href="/card/add/">форму добавления</a>,
+            а потом возвращайтесь к квизу!
+        </div>
+    </div>
+</div>
+{% endblock %}

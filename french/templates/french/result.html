@@ -1,0 +1,22 @@
+{% extends "french/base_page.html" %}
+
+{% block page-title %}
+Результаты квиза: {{ topic_name }}
+{% endblock %}
+
+{% block page-lead %}
+Ваши результаты
+{% endblock %}
+
+{% block content %}
+<div class="container px-4 py-5 text-center">
+    <div class="display-1 {% if percent >= 70 %}text-success{% else %}text-warning{% endif %}">
+        {{ percent }}%
+    </div>
+    <p class="lead">Правильно: {{ score }} из {{ total }}</p>
+    <div class="mt-4">
+        <a href="/topics/" class="btn btn-primary">К темам</a>
+        <a href="/quiz/{{ topic_id }}/" class="btn btn-secondary">Пройти ещё раз</a>
+    </div>
+</div>
+{% endblock %}

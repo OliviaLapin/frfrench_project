@@ -1,0 +1,7 @@
+пирожное;gateau
+яблоко;pomme
+дом;maison
+кот;chat
+собака;chien
+спасибо;merci
+пожалуйста;s'il vous plaît
